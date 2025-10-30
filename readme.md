@@ -131,6 +131,7 @@ In total 92 dictionaries are provided.
 | [`dictionary-ga`](dictionaries/ga) | Irish | [GPL-2.0](dictionaries/ga/license) |
 | [`dictionary-gd`](dictionaries/gd) | Scottish Gaelic | [GPL-3.0](dictionaries/gd/license) |
 | [`dictionary-gl`](dictionaries/gl) | Galician | [GPL-3.0](dictionaries/gl/license) |
+| [`dictionary-grc`](dictionaries/grc) | Greek (Ancient) | [GPL-3.0](https://extensions.libreoffice.org/en/extensions/show/ancientgreek) |
 | [`dictionary-he`](dictionaries/he) | Hebrew | [AGPL-3.0](dictionaries/he/license) |
 | [`dictionary-hr`](dictionaries/hr) | Croatian | [(LGPL-2.1 OR SISSL)](dictionaries/hr/license) |
 | [`dictionary-hu`](dictionaries/hu) | Hungarian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hu/license) |
@@ -161,6 +162,7 @@ In total 92 dictionaries are provided.
 | [`dictionary-ro`](dictionaries/ro) | Romanian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/ro/license) |
 | [`dictionary-ru`](dictionaries/ru) | Russian | [BSD-3-Clause](dictionaries/ru/license) |
 | [`dictionary-rw`](dictionaries/rw) | Kinyarwanda | [GPL-3.0](dictionaries/rw/license) |
+| [`dictionary-sa`](dictionaries/sa) | Sanskrit |  [LGPL-3.0](https://extensions.libreoffice.org/en/extensions/show/27509) |
 | [`dictionary-sk`](dictionaries/sk) | Slovak | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/sk/license) |
 | [`dictionary-sl`](dictionaries/sl) | Slovenian | [(GPL-3.0 OR LGPL-2.1)](dictionaries/sl/license) |
 | [`dictionary-sr`](dictionaries/sr) | Serbian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1 OR CC-BY-SA-3.0)](dictionaries/sr/license) |
