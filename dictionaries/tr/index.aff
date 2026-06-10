@@ -3,8 +3,8 @@ SET UTF-8
 TRY İiIıŞşÇçĞğÜüÖö-qwertyuopasdfghjklzxcvbnmQWERTYUOPASDFGHJKLZXCVBNM'
 FLAG num
 
-SFX 0 N 1
-SFX 0 0 de .
+SFX 9999 N 1
+SFX 9999 0 de .
 
 SFX 1 N 1
 SFX 1 0 dedir .
