@@ -3,9 +3,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The patch unit tests read pre-patch fixtures from git history.
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
-      - run: cargo test
-      - run: cargo run --release -- validate
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: make lint
+      - run: make test
+      - run: make validate
+      - name: readme tables are current
+        run: |
+          make readme
+          git diff --exit-code readme.md
 name: main
 on:
   - pull_request
