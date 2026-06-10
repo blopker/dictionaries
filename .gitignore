@@ -1,10 +1,5 @@
-archive/
-source/
-node_modules/
-*.d.ts
-*.map
+/target
+/archive/
+/source/
+/scratch/
 .DS_Store
-.source
-.spdx
-yarn.lock
-tsconfig.tsbuildinfo

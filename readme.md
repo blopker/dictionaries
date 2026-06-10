@@ -1,101 +1,77 @@
-<!-- lint disable no-html -->
-
 # dictionaries
 
-Collection of normalized and installable [hunspell][] dictionaries.
+Collection of normalized [hunspell][] dictionaries, used by
+[Codebook][codebook].
 
-> 👉 **Note**: this is a fork of
-> [`wooorm/dictionaries`](https://github.com/wooorm/dictionaries) used by
-> [Codebook](https://github.com/blopker/codebook).
-> See [Fork modifications](#fork-modifications) for changes made to the
-> generated dictionary files.
+This is a fork of [`wooorm/dictionaries`][upstream] that replaces the original
+JavaScript/npm pipeline with a Rust tool, strips the output down to the raw
+hunspell files (`index.aff`, `index.dic`, `license`), and validates every
+dictionary with [spellbook][] — the spell checker Codebook uses internally —
+so anything checked in here is known to load.
 
-## Contents
+## Layout
 
-*   [What is this?](#what-is-this)
-*   [Fork modifications](#fork-modifications)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [List of dictionaries](#list-of-dictionaries)
-*   [Examples](#examples)
-    *   [Example: use with `nspell`](#example-use-with-nspell)
-    *   [Example: load files](#example-load-files)
-    *   [Example: use with macOS](#example-use-with-macos)
-*   [Types](#types)
-*   [Security](#security)
-*   [Contribute](#contribute)
-    *   [Build](#build)
-    *   [Updating a dictionary](#updating-a-dictionary)
-    *   [Adding a new dictionary](#adding-a-new-dictionary)
-*   [License](#license)
+Each dictionary lives at `dictionaries/<BCP-47 code>/`:
 
-## What is this?
+*   `index.aff` — affix file (UTF-8, `SET UTF-8`)
+*   `index.dic` — word list (UTF-8)
+*   `license` — the upstream license file, when the source ships one
 
-This monorepo is a bunch of scripts that crawls dictionaries from several
-sources,
-normalizes them,
-and packs them so that they can each be installed and used in one single way.
-Dictionaries are not maintained here but they are usable from here.
+## Building
+
+The pipeline is one Rust binary with subcommands:
+
+```sh
+cargo run --release -- crawl      # download + extract upstream sources (archive/, source/)
+cargo run --release -- build      # make/configure for sources that build their files
+cargo run --release -- generate   # decode, normalize, patch, write dictionaries/
+cargo run --release -- readme     # regenerate the tables in this readme
+cargo run --release -- validate   # parse every dictionary with spellbook
+cargo run --release -- all        # all of the above, in order
+```
+
+Every subcommand accepts a repeatable `--only <code>` filter, e.g.
+`cargo run -- all --only uk`.
+A `Makefile` wraps the common invocations — run `make help` for the list.
+
+Notes:
+
+*   `validate` works offline against the checked-in dictionaries — no crawl
+    needed. Run it after any change.
+*   `crawl` caches downloads in `archive/` and extractions in `source/`
+    (both gitignored). Delete an entry to re-fetch it.
+*   `build` shells out to `make` for six sources that don't ship ready-made
+    hunspell files (`de`, `el`, `gd`, `nds`, `rw`, `he`). Host
+    prerequisites: `make` and `perl`, plus the `ispell` and `hunspell` CLIs
+    for `de` (`brew install ispell hunspell`), and a C toolchain for `he`.
+*   `patch --only <code>` applies registered patches to already-generated
+    dictionaries in place, for adding a patch without re-crawling. Patches
+    fail loudly when their target text is absent, so they can't double-apply.
+*   Upstream URLs, paths, and encodings live in `src/table.rs`, ported from
+    upstream's `script/crawl.sh` with the original provenance comments.
 
 ## Fork modifications
 
-The dictionary files under `dictionaries/` are generated,
-so these changes will be lost if a dictionary is regenerated or updated from
-upstream and must be reapplied:
+Some dictionaries are modified after normalization, before writing. The
+patches live in `src/patches.rs`; each asserts the exact upstream text it
+expects and fails the build when upstream changes, so this list (generated
+from the patch registry) is always current:
 
-*   **`uk`** (`index.aff`):
-    removed the upstream `ICONV` rules that mapped every Latin letter
-    (`a`–`z`, `A`–`Z`, and some accented variants) to the digit `0`.
-    They caused Hunspell to silently accept any Latin-script word as
-    correctly spelled,
-    because digit-only tokens are always treated as valid.
-    Latin-script words are now flagged as misspellings.
-    The `ICONV` count was updated from `64` to `2`,
-    keeping only the apostrophe normalization rules.
-    (Also noted in `dictionaries/uk/readme.md`,
-    which is itself regenerated from a template.)
-*   **`da`** (`index.dic`):
-    fixed four malformed entries where words containing `/` were quoted
-    (`"A/S"`, `"c/o"`, `"I/S"`) instead of escaped (`A\/S`),
-    and removed a stray `FedEx` fragment merged into the `Fedkrog` line.
-    (Commit `538ed7c`.)
+<!--patches start-->
 
-## When should I use this?
+*   **`uk`**: remove ICONV rules that mapped every Latin letter to the digit 0, which made hunspell silently accept all Latin-script words as numbers
+*   **`da`**: escape `/` in three slash-containing entries (quoting is not valid dic syntax) and fix a corrupted FedEx/Fedkrog line
+*   **`el-polyton`**: replace a tab with a space inside a REP rule (hunspell treats the tab as a field separator, breaking the rule)
+*   **`br`**: fix three entries flagged `m01` — with FLAG long that is one-and-a-half flags; the defined flag `m0` is meant
+*   **`gl`**: fix a corrupted numeric flag `2iñer30` (stray text spliced into `230`, the present-tense suffix flag) on the entry for `tumbar`
+*   **`hy`**: fix the `SFX VD` block header declaring 171 rules when 172 follow
+*   **`ia`**: remove a doubled closing bracket (`[oiyu]]`) from seven PFX conditions
+*   **`la`**: fix two affix rules misspelled `SFK` instead of `SFX`, which also broke the surrounding block's declared rule count
+*   **`mn`**: remove the COMPOUNDRULE block — its `[a0,a1,...]` alternation syntax is not valid hunspell and no parser accepts it
+*   **`ne`**: strip a stray `X` from 171 numeric continuation flags (`17X` → `17`); the X-less flags are the ones actually defined, matching hunspell's lenient numeric parsing; also fix three corrupted entries (a slash inside a word, a stray `I` in a flag list, and two lines merged into one)
+*   **`tr`**: renumber affix flag `0` to `9999` — hunspell numeric flags are defined as 1–65000 and flag 0 is rejected by spellbook
 
-You can particularly use the packages here as a programmer when integrating with
-other tools (such as [`nodehun`][github-nodehun] or [`nspell`][github-nspell])
-or when making such tools.
-
-## Install
-
-These packages are [ESM only][github-gist-esm].
-In Node.js (version 16+),
-install with [npm][npm-install]:
-
-```sh
-npm install dictionary-en
-```
-
-> 👉 **Note**: replace `en` with the language code you want.
->
-> ⚠️ **Important**: this project itself is MIT,
-> but each `index.dic` and `index.aff` file still has its original license!
-
-## Use
-
-```js
-import en from 'dictionary-en'
-
-console.log(en)
-// To do: use `en` somehow
-```
-
-Yields:
-
-```js
-{aff: <Buffer>, dic: <Buffer>}
-```
+<!--patches end-->
 
 ## List of dictionaries
 
@@ -109,249 +85,116 @@ Yields:
 
 In total 92 dictionaries are provided.
 
-| Name | Description | License |
-| - | - | - |
-| [`dictionary-bg`](dictionaries/bg) | Bulgarian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/bg/license) |
-| [`dictionary-br`](dictionaries/br) | Breton | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/br/license) |
-| [`dictionary-ca`](dictionaries/ca) | Catalan | [(GPL-2.0 OR LGPL-2.1)](dictionaries/ca/license) |
-| [`dictionary-ca-valencia`](dictionaries/ca-valencia) | Catalan (Valencia) | [(GPL-2.0 OR LGPL-2.1)](dictionaries/ca-valencia/license) |
-| [`dictionary-cs`](dictionaries/cs) | Czech | [GPL-2.0](dictionaries/cs/license) |
-| [`dictionary-cy`](dictionaries/cy) | Welsh | [LGPL-3.0](dictionaries/cy/license) |
-| [`dictionary-da`](dictionaries/da) | Danish | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/da/license) |
-| [`dictionary-de`](dictionaries/de) | German | [(GPL-2.0 OR GPL-3.0)](dictionaries/de/license) |
-| [`dictionary-de-at`](dictionaries/de-AT) | German (Austria) | [(GPL-2.0 OR GPL-3.0)](dictionaries/de-AT/license) |
-| [`dictionary-de-ch`](dictionaries/de-CH) | German (Switzerland) | [(GPL-2.0 OR GPL-3.0)](dictionaries/de-CH/license) |
-| [`dictionary-el`](dictionaries/el) | Greek | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/el/license) |
-| [`dictionary-el-polyton`](dictionaries/el-polyton) | Greek (Polyton) | [GPL-3.0](dictionaries/el-polyton/license) |
-| [`dictionary-en`](dictionaries/en) | English | [(MIT AND BSD)](dictionaries/en/license) |
-| [`dictionary-en-au`](dictionaries/en-AU) | English (Australia) | [(MIT AND BSD)](dictionaries/en-AU/license) |
-| [`dictionary-en-ca`](dictionaries/en-CA) | English (Canada) | [(MIT AND BSD)](dictionaries/en-CA/license) |
-| [`dictionary-en-gb`](dictionaries/en-GB) | English (United Kingdom) | [(MIT AND BSD)](dictionaries/en-GB/license) |
-| [`dictionary-en-za`](dictionaries/en-ZA) | English (South Africa) | [LGPL-2.1](dictionaries/en-ZA/license) |
-| [`dictionary-eo`](dictionaries/eo) | Esperanto | [GPL-2.0](dictionaries/eo/license) |
-| [`dictionary-es`](dictionaries/es) | Spanish | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es/license) |
-| [`dictionary-es-ar`](dictionaries/es-AR) | Spanish (Argentina) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-AR/license) |
-| [`dictionary-es-bo`](dictionaries/es-BO) | Spanish (Bolivia) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-BO/license) |
-| [`dictionary-es-cl`](dictionaries/es-CL) | Spanish (Chile) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CL/license) |
-| [`dictionary-es-co`](dictionaries/es-CO) | Spanish (Colombia) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CO/license) |
-| [`dictionary-es-cr`](dictionaries/es-CR) | Spanish (Costa Rica) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CR/license) |
-| [`dictionary-es-cu`](dictionaries/es-CU) | Spanish (Cuba) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CU/license) |
-| [`dictionary-es-do`](dictionaries/es-DO) | Spanish (Dominican Republic) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-DO/license) |
-| [`dictionary-es-ec`](dictionaries/es-EC) | Spanish (Ecuador) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-EC/license) |
-| [`dictionary-es-gt`](dictionaries/es-GT) | Spanish (Guatemala) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-GT/license) |
-| [`dictionary-es-hn`](dictionaries/es-HN) | Spanish (Honduras) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-HN/license) |
-| [`dictionary-es-mx`](dictionaries/es-MX) | Spanish (Mexico) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-MX/license) |
-| [`dictionary-es-ni`](dictionaries/es-NI) | Spanish (Nicaragua) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-NI/license) |
-| [`dictionary-es-pa`](dictionaries/es-PA) | Spanish (Panama) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PA/license) |
-| [`dictionary-es-pe`](dictionaries/es-PE) | Spanish (Peru) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PE/license) |
-| [`dictionary-es-ph`](dictionaries/es-PH) | Spanish (Philippines) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PH/license) |
-| [`dictionary-es-pr`](dictionaries/es-PR) | Spanish (Puerto Rico) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PR/license) |
-| [`dictionary-es-py`](dictionaries/es-PY) | Spanish (Paraguay) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PY/license) |
-| [`dictionary-es-sv`](dictionaries/es-SV) | Spanish (El Salvador) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-SV/license) |
-| [`dictionary-es-us`](dictionaries/es-US) | Spanish (United States of America) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-US/license) |
-| [`dictionary-es-uy`](dictionaries/es-UY) | Spanish (Uruguay) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-UY/license) |
-| [`dictionary-es-ve`](dictionaries/es-VE) | Spanish (Venezuela) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-VE/license) |
-| [`dictionary-et`](dictionaries/et) | Estonian | LGPL-2.1 |
-| [`dictionary-eu`](dictionaries/eu) | Basque | GPL-2.0 |
-| [`dictionary-fa`](dictionaries/fa) | Persian | [Apache-2.0](dictionaries/fa/license) |
-| [`dictionary-fo`](dictionaries/fo) | Faroese | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/fo/license) |
-| [`dictionary-fr`](dictionaries/fr) | French | [MPL-2.0](dictionaries/fr/license) |
-| [`dictionary-fur`](dictionaries/fur) | Friulian | [GPL-2.0](dictionaries/fur/license) |
-| [`dictionary-fy`](dictionaries/fy) | Western Frisian | [GPL-3.0](dictionaries/fy/license) |
-| [`dictionary-ga`](dictionaries/ga) | Irish | [GPL-2.0](dictionaries/ga/license) |
-| [`dictionary-gd`](dictionaries/gd) | Scottish Gaelic | [GPL-3.0](dictionaries/gd/license) |
-| [`dictionary-gl`](dictionaries/gl) | Galician | [GPL-3.0](dictionaries/gl/license) |
-| [`dictionary-he`](dictionaries/he) | Hebrew | [AGPL-3.0](dictionaries/he/license) |
-| [`dictionary-hr`](dictionaries/hr) | Croatian | [(LGPL-2.1 OR SISSL)](dictionaries/hr/license) |
-| [`dictionary-hu`](dictionaries/hu) | Hungarian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hu/license) |
-| [`dictionary-hy`](dictionaries/hy) | Armenian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hy/license) |
-| [`dictionary-hyw`](dictionaries/hyw) | Western Armenian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hyw/license) |
-| [`dictionary-ia`](dictionaries/ia) | Interlingua | [GPL-3.0](dictionaries/ia/license) |
-| [`dictionary-ie`](dictionaries/ie) | Interlingue | [Apache-2.0](dictionaries/ie/license) |
-| [`dictionary-is`](dictionaries/is) | Icelandic | [CC-BY-SA-3.0](dictionaries/is/license) |
-| [`dictionary-it`](dictionaries/it) | Italian | [GPL-3.0](dictionaries/it/license) |
-| [`dictionary-ka`](dictionaries/ka) | Georgian | [MIT](dictionaries/ka/license) |
-| [`dictionary-ko`](dictionaries/ko) | Korean | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/ko/license) |
-| [`dictionary-la`](dictionaries/la) | Latin | [GPL-2.0](dictionaries/la/license) |
-| [`dictionary-lb`](dictionaries/lb) | Luxembourgish | [EUPL-1.1](dictionaries/lb/license) |
-| [`dictionary-lt`](dictionaries/lt) | Lithuanian | [BSD-3-Clause](dictionaries/lt/license) |
-| [`dictionary-ltg`](dictionaries/ltg) | Latgalian | [LGPL-2.1](dictionaries/ltg/license) |
-| [`dictionary-lv`](dictionaries/lv) | Latvian | [LGPL-2.1](dictionaries/lv/license) |
-| [`dictionary-mk`](dictionaries/mk) | Macedonian | [GPL-3.0](dictionaries/mk/license) |
-| [`dictionary-mn`](dictionaries/mn) | Mongolian | [LPPL-1.3c](dictionaries/mn/license) |
-| [`dictionary-nb`](dictionaries/nb) | Norwegian Bokmål | [GPL-2.0](dictionaries/nb/license) |
-| [`dictionary-nds`](dictionaries/nds) | Low German | [GPL-3.0](dictionaries/nds/license) |
-| [`dictionary-ne`](dictionaries/ne) | Nepali | [LGPL-2.1](dictionaries/ne/license) |
-| [`dictionary-nl`](dictionaries/nl) | Dutch | [(BSD-3-Clause OR CC-BY-3.0)](dictionaries/nl/license) |
-| [`dictionary-nn`](dictionaries/nn) | Norwegian Nynorsk | [GPL-2.0](dictionaries/nn/license) |
-| [`dictionary-oc`](dictionaries/oc) | Occitan | [GPL-2.0](dictionaries/oc/license) |
-| [`dictionary-pl`](dictionaries/pl) | Polish | [(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)](dictionaries/pl/license) |
-| [`dictionary-pt`](dictionaries/pt) | Portuguese | [(LGPL-3.0 OR MPL-2.0)](dictionaries/pt/license) |
-| [`dictionary-pt-pt`](dictionaries/pt-PT) | Portuguese (Portugal) | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/pt-PT/license) |
-| [`dictionary-ro`](dictionaries/ro) | Romanian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/ro/license) |
-| [`dictionary-ru`](dictionaries/ru) | Russian | [BSD-3-Clause](dictionaries/ru/license) |
-| [`dictionary-rw`](dictionaries/rw) | Kinyarwanda | [GPL-3.0](dictionaries/rw/license) |
-| [`dictionary-sk`](dictionaries/sk) | Slovak | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/sk/license) |
-| [`dictionary-sl`](dictionaries/sl) | Slovenian | [(GPL-3.0 OR LGPL-2.1)](dictionaries/sl/license) |
-| [`dictionary-sr`](dictionaries/sr) | Serbian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1 OR CC-BY-SA-3.0)](dictionaries/sr/license) |
-| [`dictionary-sr-latn`](dictionaries/sr-Latn) | Serbian (Latin script) | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1 OR CC-BY-SA-3.0)](dictionaries/sr-Latn/license) |
-| [`dictionary-sv`](dictionaries/sv) | Swedish | [LGPL-3.0](dictionaries/sv/license) |
-| [`dictionary-sv-fi`](dictionaries/sv-FI) | Swedish (Finland) | [LGPL-3.0](dictionaries/sv-FI/license) |
-| [`dictionary-tk`](dictionaries/tk) | Turkmen | [Apache-2.0](dictionaries/tk/license) |
-| [`dictionary-tlh`](dictionaries/tlh) | Klingon | [Apache-2.0](dictionaries/tlh/license) |
-| [`dictionary-tlh-latn`](dictionaries/tlh-Latn) | Klingon (Latin script) | [Apache-2.0](dictionaries/tlh-Latn/license) |
-| [`dictionary-tr`](dictionaries/tr) | Turkish | [MIT](dictionaries/tr/license) |
-| [`dictionary-uk`](dictionaries/uk) | Ukrainian | [GPL-3.0](dictionaries/uk/license) |
-| [`dictionary-vi`](dictionaries/vi) | Vietnamese | [GPL-2.0](dictionaries/vi/license) |
+| Code | Language | License | Source |
+| - | - | - | - |
+| [`bg`](dictionaries/bg) | Bulgarian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/bg/license) | [bgoffice.sourceforge.net](http://bgoffice.sourceforge.net) |
+| [`br`](dictionaries/br) | Breton | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/br/license) | [Drouizig/hunspell-br](https://github.com/Drouizig/hunspell-br) |
+| [`ca`](dictionaries/ca) | Catalan | [(GPL-2.0 OR LGPL-2.1)](dictionaries/ca/license) | [Softcatala/catalan-dict-tools](https://github.com/Softcatala/catalan-dict-tools) |
+| [`ca-valencia`](dictionaries/ca-valencia) | Catalan (Valencia) | [(GPL-2.0 OR LGPL-2.1)](dictionaries/ca-valencia/license) | [Softcatala/catalan-dict-tools](https://github.com/Softcatala/catalan-dict-tools) |
+| [`cs`](dictionaries/cs) | Czech | [GPL-2.0](dictionaries/cs/license) | [translatoblog.cz](http://www.translatoblog.cz/hunspell/) |
+| [`cy`](dictionaries/cy) | Welsh | [LGPL-3.0](dictionaries/cy/license) | [techiaith/hunspell-cy](https://github.com/techiaith/hunspell-cy) |
+| [`da`](dictionaries/da) | Danish | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/da/license) | [stavekontrolden.dk](https://stavekontrolden.dk) |
+| [`de`](dictionaries/de) | German | [(GPL-2.0 OR GPL-3.0)](dictionaries/de/license) | [j3e.de](https://www.j3e.de/ispell/igerman98/index_en.html) |
+| [`de-AT`](dictionaries/de-AT) | German (Austria) | [(GPL-2.0 OR GPL-3.0)](dictionaries/de-AT/license) | [j3e.de](https://www.j3e.de/ispell/igerman98/index_en.html) |
+| [`de-CH`](dictionaries/de-CH) | German (Switzerland) | [(GPL-2.0 OR GPL-3.0)](dictionaries/de-CH/license) | [j3e.de](https://www.j3e.de/ispell/igerman98/index_en.html) |
+| [`el`](dictionaries/el) | Greek | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/el/license) | [stevestavropoulos/elspell](https://github.com/stevestavropoulos/elspell) |
+| [`el-polyton`](dictionaries/el-polyton) | Greek (Polyton) | [GPL-3.0](dictionaries/el-polyton/license) | [thepolytonicproject.gr](https://thepolytonicproject.gr/spell) |
+| [`en`](dictionaries/en) | English | [(MIT AND BSD)](dictionaries/en/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
+| [`en-AU`](dictionaries/en-AU) | English (Australia) | [(MIT AND BSD)](dictionaries/en-AU/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
+| [`en-CA`](dictionaries/en-CA) | English (Canada) | [(MIT AND BSD)](dictionaries/en-CA/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
+| [`en-GB`](dictionaries/en-GB) | English (United Kingdom) | [(MIT AND BSD)](dictionaries/en-GB/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
+| [`en-ZA`](dictionaries/en-ZA) | English (South Africa) | [LGPL-2.1](dictionaries/en-ZA/license) | [extensions.openoffice.org](https://extensions.openoffice.org/en/project/english-dictionaries-apache-openoffice) |
+| [`eo`](dictionaries/eo) | Esperanto | [GPL-2.0](dictionaries/eo/license) | [esperantilo.org](http://www.esperantilo.org/index_en.html) |
+| [`es`](dictionaries/es) | Spanish | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-AR`](dictionaries/es-AR) | Spanish (Argentina) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-AR/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-BO`](dictionaries/es-BO) | Spanish (Bolivia) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-BO/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-CL`](dictionaries/es-CL) | Spanish (Chile) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CL/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-CO`](dictionaries/es-CO) | Spanish (Colombia) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CO/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-CR`](dictionaries/es-CR) | Spanish (Costa Rica) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CR/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-CU`](dictionaries/es-CU) | Spanish (Cuba) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-CU/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-DO`](dictionaries/es-DO) | Spanish (Dominican Republic) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-DO/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-EC`](dictionaries/es-EC) | Spanish (Ecuador) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-EC/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-GT`](dictionaries/es-GT) | Spanish (Guatemala) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-GT/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-HN`](dictionaries/es-HN) | Spanish (Honduras) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-HN/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-MX`](dictionaries/es-MX) | Spanish (Mexico) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-MX/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-NI`](dictionaries/es-NI) | Spanish (Nicaragua) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-NI/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-PA`](dictionaries/es-PA) | Spanish (Panama) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PA/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-PE`](dictionaries/es-PE) | Spanish (Peru) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PE/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-PH`](dictionaries/es-PH) | Spanish (Philippines) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PH/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-PR`](dictionaries/es-PR) | Spanish (Puerto Rico) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PR/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-PY`](dictionaries/es-PY) | Spanish (Paraguay) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-PY/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-SV`](dictionaries/es-SV) | Spanish (El Salvador) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-SV/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-US`](dictionaries/es-US) | Spanish (United States of America) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-US/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-UY`](dictionaries/es-UY) | Spanish (Uruguay) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-UY/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`es-VE`](dictionaries/es-VE) | Spanish (Venezuela) | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es-VE/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |
+| [`et`](dictionaries/et) | Estonian | LGPL-2.1 | [meso.ee](http://www.meso.ee/~jjpp/speller) |
+| [`eu`](dictionaries/eu) | Basque | GPL-2.0 | [xuxen.eus](http://xuxen.eus/eu/home) |
+| [`fa`](dictionaries/fa) | Persian | [Apache-2.0](dictionaries/fa/license) | [b00f/lilak](https://github.com/b00f/lilak) |
+| [`fo`](dictionaries/fo) | Faroese | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/fo/license) | (frozen — upstream gone) |
+| [`fr`](dictionaries/fr) | French | [MPL-2.0](dictionaries/fr/license) | [grammalecte.net](https://grammalecte.net) |
+| [`fur`](dictionaries/fur) | Friulian | [GPL-2.0](dictionaries/fur/license) | (frozen — upstream gone) |
+| [`fy`](dictionaries/fy) | Western Frisian | [GPL-3.0](dictionaries/fy/license) | [PanderMusubi/frisian](https://github.com/PanderMusubi/frisian) |
+| [`ga`](dictionaries/ga) | Irish | [GPL-2.0](dictionaries/ga/license) | [kscanne/gaelspell](https://github.com/kscanne/gaelspell) |
+| [`gd`](dictionaries/gd) | Scottish Gaelic | [GPL-3.0](dictionaries/gd/license) | [kscanne/hunspell-gd](https://github.com/kscanne/hunspell-gd) |
+| [`gl`](dictionaries/gl) | Galician | [GPL-3.0](dictionaries/gl/license) | [meixome/hunspell-gl](https://github.com/meixome/hunspell-gl) |
+| [`he`](dictionaries/he) | Hebrew | [AGPL-3.0](dictionaries/he/license) | [hspell.ivrix.org.il](http://hspell.ivrix.org.il) |
+| [`hr`](dictionaries/hr) | Croatian | [(LGPL-2.1 OR SISSL)](dictionaries/hr/license) | [krunose/hunspell-hr](https://github.com/krunose/hunspell-hr) |
+| [`hu`](dictionaries/hu) | Hungarian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hu/license) | [laszlonemeth/magyarispell](https://github.com/laszlonemeth/magyarispell) |
+| [`hy`](dictionaries/hy) | Armenian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hy/license) | (frozen — upstream gone) |
+| [`hyw`](dictionaries/hyw) | Western Armenian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hyw/license) | (frozen — upstream gone) |
+| [`ia`](dictionaries/ia) | Interlingua | [GPL-3.0](dictionaries/ia/license) | [addons.thunderbird.net](https://addons.thunderbird.net/en-US/thunderbird/addon/dict-ia/) |
+| [`ie`](dictionaries/ie) | Interlingue | [Apache-2.0](dictionaries/ie/license) | [Carmina16/hunspell-ie](https://github.com/Carmina16/hunspell-ie) |
+| [`is`](dictionaries/is) | Icelandic | [CC-BY-SA-3.0](dictionaries/is/license) | [LibreOffice/dictionaries](https://github.com/LibreOffice/dictionaries) |
+| [`it`](dictionaries/it) | Italian | [GPL-3.0](dictionaries/it/license) | (frozen — upstream gone) |
+| [`ka`](dictionaries/ka) | Georgian | [MIT](dictionaries/ka/license) | [gamag/ka_GE.spell](https://github.com/gamag/ka_GE.spell) |
+| [`ko`](dictionaries/ko) | Korean | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/ko/license) | [spellcheck-ko/hunspell-dict-ko](https://github.com/spellcheck-ko/hunspell-dict-ko) |
+| [`la`](dictionaries/la) | Latin | [GPL-2.0](dictionaries/la/license) | [extensions.openoffice.org](https://extensions.openoffice.org/project/dict-la) |
+| [`lb`](dictionaries/lb) | Luxembourgish | [EUPL-1.1](dictionaries/lb/license) | [spellchecker-lu/dictionary-lb-lu](https://github.com/spellchecker-lu/dictionary-lb-lu) |
+| [`lt`](dictionaries/lt) | Lithuanian | [BSD-3-Clause](dictionaries/lt/license) | [ispell-lt/ispell-lt](https://github.com/ispell-lt/ispell-lt) |
+| [`ltg`](dictionaries/ltg) | Latgalian | [LGPL-2.1](dictionaries/ltg/license) | [dict.dv.lv](http://dict.dv.lv/home.php?prj=la) |
+| [`lv`](dictionaries/lv) | Latvian | [LGPL-2.1](dictionaries/lv/license) | [dict.dv.lv](http://dict.dv.lv/home.php?prj=lv) |
+| [`mk`](dictionaries/mk) | Macedonian | [GPL-3.0](dictionaries/mk/license) | (frozen — upstream gone) |
+| [`mn`](dictionaries/mn) | Mongolian | [LPPL-1.3c](dictionaries/mn/license) | [bataak/dict-mn](https://github.com/bataak/dict-mn) |
+| [`nb`](dictionaries/nb) | Norwegian Bokmål | [GPL-2.0](dictionaries/nb/license) | [no.speling.org](http://no.speling.org) |
+| [`nds`](dictionaries/nds) | Low German | [GPL-3.0](dictionaries/nds/license) | [tdf/dict_nds](https://github.com/tdf/dict_nds) |
+| [`ne`](dictionaries/ne) | Nepali | [LGPL-2.1](dictionaries/ne/license) | [ltk.org.np](http://ltk.org.np) |
+| [`nl`](dictionaries/nl) | Dutch | [(BSD-3-Clause OR CC-BY-3.0)](dictionaries/nl/license) | [OpenTaal/opentaal-hunspell](https://github.com/OpenTaal/opentaal-hunspell) |
+| [`nn`](dictionaries/nn) | Norwegian Nynorsk | [GPL-2.0](dictionaries/nn/license) | [no.speling.org](http://no.speling.org) |
+| [`oc`](dictionaries/oc) | Occitan | [GPL-2.0](dictionaries/oc/license) | [gl:taissou/hunspell-files-for-occitan-lengadocian](https://gitlab.com/taissou/hunspell-files-for-occitan-lengadocian) |
+| [`pl`](dictionaries/pl) | Polish | [(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)](dictionaries/pl/license) | [extensions.openoffice.org](http://extensions.openoffice.org/en/project/polish-dictionary-pack) |
+| [`pt`](dictionaries/pt) | Portuguese | [(LGPL-3.0 OR MPL-2.0)](dictionaries/pt/license) | [LibreOffice/dictionaries](https://github.com/LibreOffice/dictionaries) |
+| [`pt-PT`](dictionaries/pt-PT) | Portuguese (Portugal) | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/pt-PT/license) | [natura.di.uminho.pt](https://natura.di.uminho.pt) |
+| [`ro`](dictionaries/ro) | Romanian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/ro/license) | [rospell.wordpress.com](https://rospell.wordpress.com) |
+| [`ru`](dictionaries/ru) | Russian | [BSD-3-Clause](dictionaries/ru/license) | [LibreOffice/dictionaries](https://github.com/LibreOffice/dictionaries) |
+| [`rw`](dictionaries/rw) | Kinyarwanda | [GPL-3.0](dictionaries/rw/license) | [kscanne/hunspell-rw](https://github.com/kscanne/hunspell-rw) |
+| [`sk`](dictionaries/sk) | Slovak | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/sk/license) | [sk-spell.sk.cx](http://www.sk-spell.sk.cx) |
+| [`sl`](dictionaries/sl) | Slovenian | [(GPL-3.0 OR LGPL-2.1)](dictionaries/sl/license) | [extensions.libreoffice.org](https://extensions.libreoffice.org/extensions/slovenian-dictionary-pack/) |
+| [`sr`](dictionaries/sr) | Serbian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1 OR CC-BY-SA-3.0)](dictionaries/sr/license) | [grakic/hunspell-sr](https://github.com/grakic/hunspell-sr) |
+| [`sr-Latn`](dictionaries/sr-Latn) | Serbian (Latin script) | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1 OR CC-BY-SA-3.0)](dictionaries/sr-Latn/license) | [grakic/hunspell-sr](https://github.com/grakic/hunspell-sr) |
+| [`sv`](dictionaries/sv) | Swedish | [LGPL-3.0](dictionaries/sv/license) | [extensions.libreoffice.org](https://extensions.libreoffice.org/extensions/swedish-spelling-dictionary-den-stora-svenska-ordlistan) |
+| [`sv-FI`](dictionaries/sv-FI) | Swedish (Finland) | [LGPL-3.0](dictionaries/sv-FI/license) | [extensions.libreoffice.org](https://extensions.libreoffice.org/extensions/swedish-spelling-dictionary-den-stora-svenska-ordlistan) |
+| [`tk`](dictionaries/tk) | Turkmen | [Apache-2.0](dictionaries/tk/license) | [nazartm/turkmen-spell-check-dictionary](https://github.com/nazartm/turkmen-spell-check-dictionary) |
+| [`tlh`](dictionaries/tlh) | Klingon | [Apache-2.0](dictionaries/tlh/license) | [PanderMusubi/klingon](https://github.com/PanderMusubi/klingon) |
+| [`tlh-Latn`](dictionaries/tlh-Latn) | Klingon (Latin script) | [Apache-2.0](dictionaries/tlh-Latn/license) | [PanderMusubi/klingon](https://github.com/PanderMusubi/klingon) |
+| [`tr`](dictionaries/tr) | Turkish | [MIT](dictionaries/tr/license) | [extensions.openoffice.org](http://extensions.openoffice.org/en/project/turkish-spellcheck-dictionary) |
+| [`uk`](dictionaries/uk) | Ukrainian | [GPL-3.0](dictionaries/uk/license) | [brown-uk/dict_uk](https://github.com/brown-uk/dict_uk) |
+| [`vi`](dictionaries/vi) | Vietnamese | [GPL-2.0](dictionaries/vi/license) | [1ec5/hunspell-vi](https://github.com/1ec5/hunspell-vi) |
 
 <!--support end-->
 
-## Examples
-
-### Example: use with `nspell`
-
-This example uses `dictionary-en` in combination with
-[`nspell`][github-nspell].
-
-<details><summary>Show install command for this example</summary>
-
-```sh
-npm install dictionary-en nspell
-```
-
-</details>
-
-```js
-import en from 'dictionary-en'
-import nspell from 'nspell'
-
-const spell = nspell(en)
-console.log(spell.correct('color'))
-console.log(spell.correct('colour'))
-```
-
-Yields:
-
-```txt
-true
-false
-```
-
-### Example: load files
-
-This example loads the `index.dic` and `index.aff` files located in
-`dictionary-hyw` (Western Armenian) from a Node.js JavaScript module (ESM).
-
-It uses a ponyfill ([`import-meta-resolve`][github-import-meta-resolve]) for
-an experimental Node API.
-
-<details><summary>Show install command for this example</summary>
-
-```sh
-npm install dictionary-hyw import-meta-resolve
-```
-
-</details>
-
-```js
-import fs from 'node:fs/promises'
-import {resolve} from 'import-meta-resolve'
-
-const base = await resolve('dictionary-hyw', import.meta.url)
-const aff = await fs.readFile(new URL('index.aff', base))
-const dic = await fs.readFile(new URL('index.dic', base))
-console.log(aff, dic)
-```
-
-<!--Old name of the following section:-->
-
-<a name="macos"></a>
-
-### Example: use with macOS
-
-Follow these steps to use a dictionary on macOS:
-
-1.  navigate to the dictionary you want on GitHub,
-    such as `dictionaries/$code` (replace `$code` with the language code you
-    want)
-2.  download the `index.aff` and `index.dic` files (as in open them,
-    right-click “Raw”,
-    and “download linked files”)
-3.  rename the download files to `$code.aff` and `$code.dic`
-4.  move `$code.aff` and `$code.dic` into the folder `~/Library/Spelling/`
-5.  go to **System Preferences** > **Keyboard** > **Text** > **Spelling** and
-    select your added language (it should come with the `(Library)` suffix and
-    is situated at the bottom)
-
-## Types
-
-The packages are typed with [TypeScript][].
-
-## Security
-
-These packages are safe.
-
-## Contribute
-
-Yes please!
-See [How to Contribute to Open Source][open-source-guide-contribute].
-
-### Build
-
-To build this project,
-on macOS,
-you at least need to install:
-
-*   **wget**: `brew install wget` (crawling)
-*   **hunspell**: `brew install hunspell` (many dictionaries)
-*   **sed**: `brew install gnu-sed` (crawling, many dictionaries)
-*   **coreutils**: `brew install coreutils` (many dictionaries)
-*   **ispell**: `brew install ispell` (German)
-
-> 👉 **Note**: sed and the GNU replacements should be setup in PATH to overwrite
-> macOS defaults.
-
-### Updating a dictionary
-
-Dictionaries are not maintained here.
-Report problems upstream.
-
-### Adding a new dictionary
-
-Dictionaries are not maintained here.
-Most languages have a small community or institute that maintains a dictionary,
-and they often do so on GitHub or similar.
-Please ask in the issues to request that such a dictionary is included here.
-
-> 👉 **Note**: acceptable dictionaries must:
->
-> *   have a significant affix file (not just a `.dic` file)
-> *   have an open source license
-> *   have recent contributions
-
 ## License
 
-[MIT][file-license] © [Titus Wormer][wooorm]
+The build tool is [MIT][file-license] licensed (© Titus Wormer for the
+original pipeline this is derived from).
+Each dictionary keeps its own upstream license — see the table above and the
+`license` file in each dictionary directory.
 
-See `license` files in each dictionary for the licensing of `index.dic` and
-`index.aff` files.
-
-[npm-install]: https://docs.npmjs.com/cli/install
+[codebook]: https://github.com/blopker/codebook
 
 [file-license]: license
 
-[github-import-meta-resolve]: https://github.com/wooorm/import-meta-resolve
-
-[github-gist-esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-[github-nodehun]: https://github.com/nathanjsweet/nodehun
-
-[github-nspell]: https://github.com/wooorm/nspell
-
-[open-source-guide-contribute]: https://opensource.guide/how-to-contribute/
-
-[typescript]: https://www.typescriptlang.org
-
-[wooorm]: https://wooorm.com
-
 [hunspell]: https://hunspell.github.io
+
+[spellbook]: https://github.com/helix-editor/spellbook
+
+[upstream]: https://github.com/wooorm/dictionaries
