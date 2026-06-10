@@ -7,3 +7,4 @@ node_modules/
 .source
 .spdx
 yarn.lock
+tsconfig.tsbuildinfo

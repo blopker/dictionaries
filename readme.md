@@ -4,9 +4,16 @@
 
 Collection of normalized and installable [hunspell][] dictionaries.
 
+> 👉 **Note**: this is a fork of
+> [`wooorm/dictionaries`](https://github.com/wooorm/dictionaries) used by
+> [Codebook](https://github.com/blopker/codebook).
+> See [Fork modifications](#fork-modifications) for changes made to the
+> generated dictionary files.
+
 ## Contents
 
 *   [What is this?](#what-is-this)
+*   [Fork modifications](#fork-modifications)
 *   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
@@ -30,6 +37,29 @@ sources,
 normalizes them,
 and packs them so that they can each be installed and used in one single way.
 Dictionaries are not maintained here but they are usable from here.
+
+## Fork modifications
+
+The dictionary files under `dictionaries/` are generated,
+so these changes will be lost if a dictionary is regenerated or updated from
+upstream and must be reapplied:
+
+*   **`uk`** (`index.aff`):
+    removed the upstream `ICONV` rules that mapped every Latin letter
+    (`a`–`z`, `A`–`Z`, and some accented variants) to the digit `0`.
+    They caused Hunspell to silently accept any Latin-script word as
+    correctly spelled,
+    because digit-only tokens are always treated as valid.
+    Latin-script words are now flagged as misspellings.
+    The `ICONV` count was updated from `64` to `2`,
+    keeping only the apostrophe normalization rules.
+    (Also noted in `dictionaries/uk/readme.md`,
+    which is itself regenerated from a template.)
+*   **`da`** (`index.dic`):
+    fixed four malformed entries where words containing `/` were quoted
+    (`"A/S"`, `"c/o"`, `"I/S"`) instead of escaped (`A\/S`),
+    and removed a stray `FedEx` fragment merged into the `Fedkrog` line.
+    (Commit `538ed7c`.)
 
 ## When should I use this?
 
