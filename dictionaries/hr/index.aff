@@ -1,6 +1,7 @@
 SET UTF-8
 
-TRY ABCDEFGHIJKLMNOPQRSTUVWXYćĆčČđĐžŽabcdefghijklmnopqrstuvwxy-'.ëü
+# TRY ABCDEFGHIJKLMNOPQRSTUVWXYćĆčČđĐžŽabcdefghijklmnopqrstuvwxy-'.ëü
+TRY aionerjmtsulkpvdzAgčcbšhćžfEMđGCILHDJSKPBŠTVČNRFOZŽWyUĐxwYĆQqX
 
 KEY qwertzuiopšđ|asdfghjklčćž|yxcvbnm|žšđ|ćščđž|žćđ|đšćž|zy|qawsedrftgyhuj|jikolpč|aysxdcfvgbh|hnjmk
 
@@ -76,7 +77,7 @@ ICONV ŕ r
 
 
 # REP - .
-REP 231
+REP 232
 REP ^pocrtava podcrtava
 REP ^zdrastv zdravstv
 REP nućemo$ nut_ćemo
@@ -91,6 +92,7 @@ REP aćemo$ at_ćemo
 REP aćete$ at_ćete
 REP ićete$ it_ćete
 REP avaon ovaonic
+REP tentik tentifik
 REP ^očenaš Očenaš
 REP ićemo$ it_ćemo
 REP ećete$ et_ćete
@@ -310,7 +312,7 @@ REP ^ž Ž
 REP - _
 
 
-AF 417
+AF 418
 AF ZZ	# 1
 AF ZY	# 2
 AF ZX	# 3
@@ -728,6 +730,7 @@ AF SOSPSR	# 414
 AF SMSNSR	# 415
 AF SL	# 416
 AF SK   # 417
+AF UK	# 418
 
 
 SFX XZ Y      21

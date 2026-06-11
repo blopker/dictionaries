@@ -775,7 +775,7 @@ adkoadetañ/a0
 adkoadetoc'h/a0
 adkoadjon/a0
 adkoadoc'h/a0
-adkoagn/a0d6 po:v st:adkoani  #adkoaniañ
+adkoagn/a0d6 po:v st:adkoani #adkoaniañ
 adkoan/a0
 adkoaniañ/a0
 adkoanig/a0
@@ -910,7 +910,7 @@ adlennourez/a0
 adlennourezed/a0
 adlennourien/a0
 adlennourig/a0
-adleugn/a0d6 po:v st:adleuni  #adleuniañ
+adleugn/a0d6 po:v st:adleuni #adleuniañ
 adleuniañ/a0
 adlevr/a0
 adlevrdi/a0
@@ -1339,7 +1339,7 @@ adstalioùigoù/a0
 adstandilhon/a0d1 po:v st:adstandilhon #adstandilhonañ
 adstandilhonañ/a0 po:v is:inf
 adstêr/a0
-adstergn/a0d6 po:v st:adsterni  #adsterniañ
+adstergn/a0d6 po:v st:adsterni #adsterniañ
 adstêrig/a0
 adstêrigoù/a0
 adstêrioù/a0
@@ -1621,7 +1621,7 @@ advlazig/a0
 advlazigoù/a0
 advlazoù/a0
 advlazoùigoù/a0
-advleugn/a0d6 po:v st:advleuni  #advleuniañ
+advleugn/a0d6 po:v st:advleuni #advleuniañ
 advleuniañ/a0
 advoaz/a0
 advoazig/a0
@@ -4275,7 +4275,7 @@ andezvekañ/a0
 andezvekat/a0
 andezvekoc'h/a0
 Andi
-andogn/a0d6 po:v st:andoni  #andoniañ
+andogn/a0d6 po:v st:andoni #andoniañ
 Andolieg
 andon/a0
 andoniañ/a0
@@ -4506,7 +4506,7 @@ Anjeviz
 anjon/a0
 añjon/a0
 Ankara
-ankegn/a0d6 po:v st:ankeni  #ankeniañ
+ankegn/a0d6 po:v st:ankeni #ankeniañ
 ankelc'h/a0a1
 ankelc'herez/a0
 ankelc'herezed/a0
@@ -5215,7 +5215,7 @@ aotreüzik/a0
 aotrevarz/p5a0 po:g
 Aotrom
 aotrou/a0
-aotrougn/a0d6 po:v st:aotrouni  #aotrouniañ
+aotrougn/a0d6 po:v st:aotrouni #aotrouniañ
 aotrouien/a0
 aotrouig/a0
 aotrounez/a0
@@ -7965,7 +7965,7 @@ askloedigoù/a0
 askloediñ/a0
 askloedjon/a0
 askloedoc'h/a0
-askoagn/a0d6 po:v st:askoani  #askoaniañ
+askoagn/a0d6 po:v st:askoani #askoaniañ
 askoaniañ/a0 po:v st:askoani is:inf
 askoc'h/a0
 askol/a0
@@ -12145,7 +12145,7 @@ barzhig
 barzhigoù
 barzhioù
 barzhioùigoù
-barzhogn/m0d6 po:v st:barzhoni  #barzhoniañ
+barzhogn/m0d6 po:v st:barzhoni #barzhoniañ
 barzhoneg
 barzhonegig
 barzhonegigoù
@@ -13274,7 +13274,7 @@ begeliadig
 begeliadigoù
 begeliadoù
 begeliadoùigoù
-begeliat/m0 po:v  st:begeli is:inf
+begeliat/m0 po:v st:begeli is:inf
 begeliegik
 begeliek/n1 po:aa
 begelig/p5
@@ -15361,7 +15361,7 @@ bererezh
 Berezig
 Bergad
 bergen
-bergn/m0d6 po:v st:berni  #berniañ
+bergn/m0d6 po:v st:berni #berniañ
 bergola
 bergolaig
 bergolaigoù
@@ -19787,7 +19787,7 @@ blegig
 blegigoù
 blegioù
 blegioùigoù
-blegn/m0d6 po:v st:bleni  #bleniañ
+blegn/m0d6 po:v st:bleni #bleniañ
 blegoù
 blegoùigoù
 blegus
@@ -20027,7 +20027,7 @@ bleudusat
 bleudusoc'h
 bleuduzik
 Bleuenn
-bleugn/m0d6 po:v st:bleuni  #bleuniañ
+bleugn/m0d6 po:v st:bleuni #bleuniañ
 Bleuloc'h
 bleuñ
 bleuñenn
@@ -20518,7 +20518,7 @@ bloc'hadoù
 bloc'hadoùigoù
 bloc'helaat
 bloc’hela/d2m0 po:v st:bloc’hela #bloc’helaat
-bloc'hela/d3m0 po:v st:bloc’hela #? d3evaat ?  bloc’helaat
+bloc'hela/d3m0 po:v st:bloc’hela #? d3evaat ? bloc’helaat
 bloc'helaioc'h
 bloc'helaior
 bloc'helaiot
@@ -20665,7 +20665,7 @@ blontegig
 blot
 blotaat
 blota/d2m0 po:v st:blota #blotaat
-blota/d3m0 po:v st:blota  #? d3evaat blotaat
+blota/d3m0 po:v st:blota #? d3evaat blotaat
 blotaioc'h
 blotaior
 blotaiot
@@ -24903,7 +24903,7 @@ braslinennjon
 braslinennoc'h
 braslinennoù
 braslinennoùigoù
-braslugn/m0d6 po:v st:brasluni  #brasluniañ
+braslugn/m0d6 po:v st:brasluni #brasluniañ
 braslun
 brasluniadur
 brasluniadurig
@@ -30718,7 +30718,7 @@ chakodig
 chakodigoù
 chakodoù
 chakodoùigoù
-chakogn/d6 po:v st:chakoni  #chakoniat
+chakogn/d6 po:v st:chakoni #chakoniat
 chakoniat
 chakonioù
 chakous
@@ -49555,7 +49555,7 @@ c'houganetañ
 c'houganetoc'h
 c'houganjon
 c'houganoc'h
-chougata/d3 po:v st:chougata  #chougata
+chougata/d3 po:v st:chougata #chougata
 chougataioc'h
 chougataior
 chougataiot
@@ -57788,7 +57788,7 @@ c'hwegetat
 c'hwegetoc'h
 c'hwegik
 c'hwegjon
-c'hwegn/d6 po:v st:c’hweni  #c’hweniañ
+c'hwegn/d6 po:v st:c’hweni #c’hweniañ
 c'hwegoc'h
 C'hwegon
 c'hwegr
@@ -60158,7 +60158,7 @@ c'hwirierezh
 c'hwirierien
 c'hwirierig
 c'hwirig
-c'hwirign/d6 po:v st:c’hwirini  #c’hwiriniat
+c'hwirign/d6 po:v st:c’hwirini #c’hwiriniat
 c'hwirigoù
 c'hwirii
 c'hwiriimp
@@ -67823,7 +67823,7 @@ deskigoù
 deskiñ
 deskjon
 deskoc'h
-deskogn/m0d6 po:v st:deskoni  #deskoniañ
+deskogn/m0d6 po:v st:deskoni #deskoniañ
 deskoni/a1
 deskoniadur
 deskoniadurig
@@ -70071,7 +70071,7 @@ diblusketañ
 diblusketoc'h
 dibluskjon
 dibluskoc'h
-diboagn/m0d6 po:v st:diboani  #diboaniañ
+diboagn/m0d6 po:v st:diboani #diboaniañ
 diboan
 Diboan
 diboanañ
@@ -70378,7 +70378,7 @@ dibriziusañ
 dibriziusat
 dibriziusoc'h
 dibriziuzik
-dibrizogn/m0d6 po:v st:dibrizoni  #dibrizoniañ
+dibrizogn/m0d6 po:v st:dibrizoni #dibrizoniañ
 dibrizoniañ
 dibrjon
 dibroc'h
@@ -71351,7 +71351,7 @@ didrefoedetoc'h
 didrefoediñ
 didrefoedjon
 didrefoedoc'h
-didregn/m0d6 po:v st:didreni  #didreniañ
+didregn/m0d6 po:v st:didreni #didreniañ
 didrembik
 didremp/a1
 didrempañ
@@ -72366,7 +72366,7 @@ diforc'husañ
 diforc'husat
 diforc'husoc'h
 diforc'huzik
-diforgn/m0d6 po:v st:diforni  #diforniañ
+diforgn/m0d6 po:v st:diforni #diforniañ
 diforniañ
 diforzh/n1m0 po:aa
 difouge
@@ -73048,7 +73048,7 @@ digendalc'hañ
 digendalc'hat
 digendalc'hik
 digendalc'hoc'h
-digendogn/m0d6 po:v st:digendoni  #digendoniañ
+digendogn/m0d6 po:v st:digendoni #digendoniañ
 digendoniañ/m0 po:v st:digendoni is:inf
 digened
 digenedegik
@@ -73645,7 +73645,7 @@ digorglunetat
 digorglunetoc'h
 digorglunik
 digorglunoc'h
-digorgn/m0d6 po:v st:digorni  #digorniañ
+digorgn/m0d6 po:v st:digorni #digorniañ
 digoridigezh
 digoridigezhig
 digoridigezhigoù
@@ -74484,7 +74484,7 @@ dikig
 dikigoù
 dikjon
 dikoc'h
-dikorgn/m0d6 po:v st:dikorni  #
+dikorgn/m0d6 po:v st:dikorni #
 dikoù
 dikoùigoù
 diktad
@@ -75345,7 +75345,7 @@ Dinanadezedigoù
 Dinanadezig
 Dinanadig
 Dinaniz
-dinaogn/m0d6 po:v st:dinaoni  #dinaoniañ
+dinaogn/m0d6 po:v st:dinaoni #dinaoniañ
 dinaonedik
 dinaonet
 dinaonetañ
@@ -76683,7 +76683,7 @@ disafarañ
 disafarat
 disafarik
 disafaroc'h
-disagn/m0d6 po:v st:disani  #disaniañ
+disagn/m0d6 po:v st:disani #disaniañ
 disailh/a1
 disailhadeg
 disailhadegig
@@ -78029,7 +78029,7 @@ disleberik
 disleberiñ
 disleberjon
 disleberoc'h
-disleugn/m0d6 po:v st:disleuni  #disleuniañ
+disleugn/m0d6 po:v st:disleuni #disleuniañ
 disleuniañ
 disleviñ
 disliv/a1
@@ -79041,7 +79041,7 @@ disterat
 disterded
 disterder
 disterdra
-distergn/m0d6 po:v st:disterni  #disterniañ
+distergn/m0d6 po:v st:disterni #disterniañ
 disterig
 disterigik
 disterik
@@ -80351,7 +80351,7 @@ diverglusañ
 diverglusat
 diverglusoc'h
 divergluzik
-divergn/m0d6 po:v st:diverni  #diverniañ
+divergn/m0d6 po:v st:diverni #diverniañ
 divergondadell
 divergondadellezed
 divergondadellig
@@ -80820,7 +80820,7 @@ divles
 divlesañ
 divlesat
 divlesoc'h
-divleugn/m0d6 po:v st:divleuni  #divleuniañ
+divleugn/m0d6 po:v st:divleuni #divleuniañ
 divleuniañ
 divleuñv/a1
 divleuñvañ
@@ -80967,7 +80967,7 @@ divogerañ
 divogerat
 divogerik
 divogeroc'h
-divogn/m0d6 po:v st:divoni  #divoniañ
+divogn/m0d6 po:v st:divoni #divoniañ
 divolsañ
 divolsat
 divolsoc'h
@@ -81785,7 +81785,7 @@ diweñvuzik
 diweoc'h
 diweredekaat/m0 po:v is:inf
 diweredeka/d2m0 po:v st:diweredeka #diweredekaat
-diwergn/m0d6 po:v st:diwerni  #diwerniañ
+diwergn/m0d6 po:v st:diwerni #diwerniañ
 diwern
 diwernañ
 diwernat
@@ -82678,7 +82678,7 @@ dizoac'hetat
 dizoac'hetoc'h
 dizoac'hjon
 dizoac'hoc'h
-dizoagn/m0d6 po:v st:dizoani  #dizoaniañ
+dizoagn/m0d6 po:v st:dizoani #dizoaniañ
 dizoan
 dizoanañ
 dizoanat
@@ -83128,7 +83128,7 @@ doagennjon
 doagennoc'h
 doagennoù
 doagennoùigoù
-doagn/m0d6 po:v st:doani  #doaniañ
+doagn/m0d6 po:v st:doani #doaniañ
 doailhon
 doailhonig
 doailhonigoù
@@ -91477,7 +91477,7 @@ dutaerig
 dutaioc'h
 dutaior
 dutaiot
-duvell/d1m0 po:v st:duvell  #duvelliñ
+duvell/d1m0 po:v st:duvell #duvelliñ
 duvellerez
 duvellerezed
 duvellerien
@@ -92492,7 +92492,7 @@ eilstummoùigoù/a0
 eilti/a0
 eiltiez/a0
 eiltiig/a0
-eiltogn/a0d6 po:v st:eiltoni  #eiltoniañ
+eiltogn/a0d6 po:v st:eiltoni #eiltoniañ
 eiltoniañ/a0
 eiltreiñ/a0 po:v st:eiltro is:inf
 eiltres/a0a1
@@ -95065,7 +95065,7 @@ enflistretañ/a0
 enflistretoc'h/a0
 enflistrjon/a0
 enflistroc'h/a0
-enforgn/a0d6 po:v st:enforni  #enforniañ
+enforgn/a0d6 po:v st:enforni #enforniañ
 enforn/a0
 enforniañ/a0
 enfornig/a0
@@ -95886,7 +95886,7 @@ ensoc'hetañ/a0
 ensoc'hetoc'h/a0
 ensoc'hjon/a0
 ensoc'hoc'h/a0
-enstergn/a0d6 po:v st:ensterni  #ensterniañ
+enstergn/a0d6 po:v st:ensterni #ensterniañ
 ensterniañ/a0
 enstrilh/a0a1
 enstrilhañ/a0
@@ -97771,7 +97771,7 @@ eurc'hetoc'h/a0
 eurc'hjon/a0
 eurc'hoc'h/a0
 eurded/a0
-eure/a0 po:v st:gra is:past_p3_sg    #ober
+eure/a0 po:v st:gra is:past_p3_sg #ober
 eured/a0a1
 euredeg/a0
 euredegig/a0
@@ -105310,7 +105310,7 @@ fiskalañ
 fiskalat
 fiskalik
 fiskaloc'h
-fiskoagn/d6 po:v st:fiskoani  #fiskoaniañ
+fiskoagn/d6 po:v st:fiskoani #fiskoaniañ
 fiskoan
 fiskoaniañ
 fiskoanig
@@ -108442,7 +108442,7 @@ forfumigoù
 forfumiñ
 forfumoù
 forfumoùigoù
-forgn/m0d6 po:v st:forni  #forniañ
+forgn/m0d6 po:v st:forni #forniañ
 forj/a1
 forjañ
 forjerez
@@ -108591,7 +108591,7 @@ Fortugal
 Fortugalad
 Fortugaladig
 Fortugaliz
-fortugn/d6 po:v st:fortuni  #fortuniañ
+fortugn/d6 po:v st:fortuni #fortuniañ
 fortun
 fortuniañ
 fortunig
@@ -111859,7 +111859,7 @@ fuetoc'h
 fufal
 fuferig
 fuferigoù
-fugn/d6 po:v st:funi  #funiañ
+fugn/d6 po:v st:funi #funiañ
 fugnez
 fugnezenn
 fugnezennig
@@ -135186,7 +135186,7 @@ greuchadetoc'h
 greuchadiñ
 greuchadjon
 greuchadoc'h
-greugn/m0d6 po:v st:greuni  #greuniañ
+greugn/m0d6 po:v st:greuni #greuniañ
 greuj/a1
 greujañ
 greujetañ
@@ -138116,7 +138116,7 @@ gwardlec'hig
 gwardlec'higoù
 gwardlec'hioù
 gwardlec'hioùigoù
-gwardogn/m0d6 po:v st:gwardoni  #gwardoniañ
+gwardogn/m0d6 po:v st:gwardoni #gwardoniañ
 gwardoniañ
 gwardonidigezh
 gwardoniezh
@@ -145939,7 +145939,7 @@ ifernusat/a0
 ifernusoc'h/a0
 ifernuzik/a0
 Ifig
-iforgn/a0d6 po:v st:iforni  #
+iforgn/a0d6 po:v st:iforni #
 iforn/a0a1
 ifornañ/a0
 ifornetañ/a0
@@ -145970,7 +145970,7 @@ igoretoc'h/a0
 igoridigezh/a0
 igorjon/a0
 igoroc'h/a0
-igougn/a0d6 po:v st:igouni  #igouniañ
+igougn/a0d6 po:v st:igouni #igouniañ
 igouniañ/a0
 igounierez/a0
 igounierezed/a0
@@ -154302,7 +154302,7 @@ kazarc'hetoc'h
 kazarc'hiñ
 kazarc'hjon
 kazarc'hoc'h
-kazargn/m0d6 po:v st:kazarni  #kazarniañ
+kazargn/m0d6 po:v st:kazarni #kazarniañ
 kazarn
 kazarniad
 kazarniadig
@@ -154668,7 +154668,7 @@ kefloueretañ
 kefloueretoc'h
 keflouerjon
 kefloueroc'h
-keflugn/m0d6 po:v st:kefluni  #kefluniañ
+keflugn/m0d6 po:v st:kefluni #kefluniañ
 kefluniad
 kefluniadig
 kefluniadigoù
@@ -156311,7 +156311,7 @@ kendoazherioù
 kendoazherioùigoù
 kendodiñ/m0 po:v is:inf st:kendod
 kendod/m0d1 po:v st:kendod
-kendogn/m0d6 po:v st:kendoni  #kendoniañ
+kendogn/m0d6 po:v st:kendoni #kendoniañ
 kendon
 kendoniadur
 kendoniadurig
@@ -158788,7 +158788,7 @@ kergloc'hat
 kergloc'hik
 kergloc'hoc'h
 Kerglof
-kergn/m0d6 po:v st:kerni  #kerniañ
+kergn/m0d6 po:v st:kerni #kerniañ
 Kergonan
 Kergrist
 Kergustent
@@ -163360,7 +163360,7 @@ koagerezh
 koagetañ
 koagetoc'h
 koagjon
-koagn/m0d6 po:v st:koani  #koaniañ
+koagn/m0d6 po:v st:koani #koaniañ
 koagoc'h
 koailh
 koailhata/d3m0 po:v st:koailhata #koailhata
@@ -164642,7 +164642,7 @@ komputorig
 komputorigoù
 komputorioù
 komputorioùigoù
-komugn/m0d6 po:v st:komuni  #komuniañ
+komugn/m0d6 po:v st:komuni #komuniañ
 komunegezh
 komuniañ
 komunion
@@ -165535,7 +165535,7 @@ korgammañ
 korgammat
 korgammik
 korgammoc'h
-korgn/m0d6 po:v st:korni  #kornial
+korgn/m0d6 po:v st:korni #kornial
 Korgon
 koriad
 koriadig
@@ -170250,7 +170250,7 @@ kreginerezed
 kreginerien
 kreginerig
 kregiñ/m0 po:v st:krog is:inf
-kregn/m0d6 po:v st:kreni  #krenial
+kregn/m0d6 po:v st:kreni #krenial
 kregon
 kregonenn
 kregonennig
@@ -176820,7 +176820,7 @@ Lanwezoù
 Lanyugon
 laodanom
 laodez
-laogn/d6 po:v st:laoni  #laoniañ
+laogn/d6 po:v st:laoni #laoniañ
 laon
 laoneg
 laonegig
@@ -178335,7 +178335,7 @@ leueiouaj
 leueioùigoù
 leueoù
 leueoùigoù
-leugn/d6 po:v st:leuni  #leuniañ
+leugn/d6 po:v st:leuni #leuniañ
 leukemiezh
 leukemiezhig
 leukemiezhigoù
@@ -182360,7 +182360,7 @@ lugetañ
 lugetoc'h
 lugik
 lugjon
-lugn/d6 po:v st:luni  #luniañ
+lugn/d6 po:v st:luni #luniañ
 lugoc'h
 lugud/a1
 lugudachoù
@@ -183093,7 +183093,7 @@ maerigoù
 maerioù
 maerioùigoù
 maerl
-maerogn/m0d6 po:v st:maeroni  #maeroniañ
+maerogn/m0d6 po:v st:maeroni #maeroniañ
 maeron
 Maeron
 maeronez
@@ -184749,7 +184749,7 @@ marmouzheñveloc'h
 marmouzien
 marmouzig
 marmouz/m0d1 po:v st:marmouz #marmouzañ
-marnaogn/m0d6 po:v st:marnaoni  #marnaoniañ
+marnaogn/m0d6 po:v st:marnaoni #marnaoniañ
 marnaonañ/m0 po:v is:inf st:marnaon
 marnaonegezh
 marnaonegik
@@ -187698,7 +187698,7 @@ mestriezhioùigoù
 mestrig
 mestrigoù
 mestr/m0d1 po:v st:mestr #mestrañ
-mestrogn/m0d6 po:v st:mestroni  #mestroniañ
+mestrogn/m0d6 po:v st:mestroni #mestroniañ
 mestroniadur
 mestroniadurig
 mestroniadurigoù
@@ -193917,7 +193917,7 @@ muselladennoù
 muselladennoùigoù
 musellat
 musell/m0d1 po:v st:musell #musellat
-museta/d3m0 po:v st:museta  #museta
+museta/d3m0 po:v st:museta #museta
 musetaioc'h
 musetaior
 musetaiot
@@ -193941,7 +193941,7 @@ mut
 mutañ
 mutat
 mutoc'h
-muturgn/m0d6 po:v st:muturni  #muturniañ
+muturgn/m0d6 po:v st:muturni #muturniañ
 muturniad
 muturniadig
 muturniañ
@@ -194377,7 +194377,7 @@ nannsoudardedigoù
 nannsoudardig
 Nant
 Nantraezh
-naogn/d6 po:v st:naoni  #naoniañ
+naogn/d6 po:v st:naoni #naoniañ
 naogont
 naon
 naonder
@@ -199318,7 +199318,7 @@ paemantoùigoù
 Paen
 paeoù
 paeoùigoù
-paerogn/m0d6 po:v st:paeroni  #paeroniañ
+paerogn/m0d6 po:v st:paeroni #paeroniañ
 paeron
 paeroned
 paeronedigoù
@@ -199406,7 +199406,7 @@ pagodennig
 pagodennigoù
 pagodennoù
 pagodennoùigoù
-pagogn/m0d6 po:v st:pagoni  #pagoniañ
+pagogn/m0d6 po:v st:pagoni #pagoniañ
 pagon
 pagoniad
 pagoniadig
@@ -203433,7 +203433,7 @@ pellurzhierig
 pellurzhierigoù
 pellurzhierioù
 pellurzhierioùigoù
-pellvlegn/m0d6 po:v st:pellvleni  #pellvleniañ
+pellvlegn/m0d6 po:v st:pellvleni #pellvleniañ
 pellvleniañ
 pellvlenierez
 pellvlenierezed
@@ -206217,7 +206217,7 @@ peurzistrujidigezhigoù
 peurzistrujidigezhioù
 peurzistrujidigezhioùigoù
 peurzistrujjon
-peurzistruj/m01 po:v st:peurzistruj #peurzistrujañ
+peurzistruj/m0 po:v st:peurzistruj #peurzistrujañ
 peurzistrujoc'h
 peurzornañ
 peurzorn/m0d1 po:v st:peurzorn #peurzornañ
@@ -209750,7 +209750,7 @@ plomeisiin
 plomeisiint
 plomeisiis
 plomeisiit
-plomeis/m0d4  po:v st:plomeisi #plomeisiañ
+plomeis/m0d4 po:v st:plomeisi #plomeisiañ
 plomenn
 plomennig
 plomennigoù
@@ -210115,7 +210115,7 @@ poaeadoù
 poaeadoùigoù
 poaed
 poaedigoù
-poagn/m0d6 po:v st:poani  #poaniañ
+poagn/m0d6 po:v st:poani #poaniañ
 poaig
 poaigoù
 poan
@@ -211797,8 +211797,8 @@ postilhoned
 postilhonedigoù
 postilhonig
 postjon
-post/m01 po:v st:post #postal
-post/m01 po:v st:post #postañ
+post/m0 po:v st:post #postal
+post/m0 po:v st:post #postañ
 postoc'h
 Poston
 postoù
@@ -214018,7 +214018,7 @@ predenekañ
 predenekat
 predenekoc'h
 Predenig
-preder/d4m0  po:v st:prederi #prederiañ
+preder/d4m0 po:v st:prederi #prederiañ
 prederegik
 prederek
 prederekañ
@@ -215789,7 +215789,7 @@ priziusoc'h
 priziusted
 priziuster
 priziuzik
-prizogn/m0d6 po:v st:prizoni  #prizoniañ
+prizogn/m0d6 po:v st:prizoni #prizoniañ
 prizonañ
 prizonerezh
 prizonerezhig
@@ -217475,7 +217475,7 @@ pusig
 pusigoù
 pusoù
 pusoùigoù
-pusugn/m0d6 po:v st:pusuni  #pusuniiñ
+pusugn/m0d6 po:v st:pusuni #pusuniiñ
 pusun
 pusuned
 pusunenn
@@ -218333,7 +218333,7 @@ rakporzhig
 rakporzhigoù
 rakporzhioù
 rakporzhioùigoù
-rakpreder/d4  po:v st:rakprederi #rakprederiañ
+rakpreder/d4 po:v st:rakprederi #rakprederiañ
 rakprederiañ
 rakprederig
 rakprederigoù
@@ -218374,7 +218374,7 @@ rakprizig
 rakprizigoù
 rakprizioù
 rakprizioùigoù
-rakprizogn/d6 po:v st:raprizoni  #rakprizoniañ
+rakprizogn/d6 po:v st:raprizoni #rakprizoniañ
 rakprizon/a1
 rakprizonad
 rakprizonadig
@@ -222483,7 +222483,7 @@ rodetoc'h
 Rodezia
 rodheol/d4 po:v st:rodheoli #rodheoliañ
 rodheoloañ
-rodheolo/d2 po:v st:rodheolo  #? kkeg ? rodheoloañ
+rodheolo/d2 po:v st:rodheolo #? kkeg ? rodheoloañ
 rodheoloioc'h
 rodheoloior
 rodheoloiot
@@ -226610,7 +226610,7 @@ sifellegedigoù
 sifellegig
 sifeloc'h
 sifera
-sifergn/d6 po:v st:siferni  #siferniañ
+sifergn/d6 po:v st:siferni #siferniañ
 sifern/a1
 sifernetañ
 sifernetoc'h
@@ -230139,7 +230139,7 @@ skragnat
 skragnik
 skragnoc'h
 skrammañ
-skramm/d1 po:v st:skramm  #skrammañ
+skramm/d1 po:v st:skramm #skrammañ
 skrammgehent/a1
 skrammgehentetañ
 skrammgehentetoc'h
@@ -233894,7 +233894,7 @@ stergannetoc'h
 sterganniñ
 stergannjon
 stergannoc'h
-stergn/d6 po:v st:sterni  #sterniañ
+stergn/d6 po:v st:sterni #sterniañ
 stergoumoulenn
 stergoumoulennig
 stergoumoulennigoù
@@ -253124,7 +253124,7 @@ Togmael
 tognañ
 tognat
 tognik
-togn/m0d6 po:v st:toni  #toniañ
+togn/m0d6 po:v st:toni #toniañ
 tognoc'h
 togoc'h
 togonoù
@@ -310997,7 +310997,7 @@ zrochoc'h
 zroc'holiañ
 zroc'hoù
 zroc'hoùigoù
-zrod/d1 po:v st:zrod  #zrodiñ
+zrod/d1 po:v st:zrod #zrodiñ
 zrodiñ po:v is:inf st:zrod
 zrodroc'h/a1
 zrodroc'hadur
