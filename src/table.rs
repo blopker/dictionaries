@@ -547,7 +547,7 @@ pub static SOURCES: &[Source] = &[
         name: "latvian",
         page: "http://dict.dv.lv/home.php?prj=lv",
         fetch: Fetch::Archive {
-            url: "http://dict.dv.lv/download/lv_LV-1.4.0.oxt",
+            url: "http://dict.dv.lv/download/lv_LV-1.5.0.oxt",
             kind: ArchiveKind::Zip,
         },
         extra: &[],
