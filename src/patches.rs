@@ -82,6 +82,14 @@ pub static PATCHES: &[Patch] = &[
         apply: patch_ne,
     },
     Patch {
+        code: "sa",
+        summary: "clean up stray carriage returns inside lines: repair dic entries and \
+                  affix rules where a CR is glued onto a word, and drop single-rule \
+                  affix blocks whose rule has a bare CR as a whole field (dead rules \
+                  hunspell could never match)",
+        apply: patch_sa,
+    },
+    Patch {
         code: "tr",
         summary: "renumber affix flag `0` to `9999` — hunspell numeric flags are defined \
                   as 1–65000 and flag 0 is rejected by spellbook",
@@ -259,6 +267,96 @@ fn patch_ne(text: &mut DictText) -> Result<()> {
         "महादेश/18,22,15,34\rमहादैया",
         "महादेश/18,22,15,34\nमहादैया",
     )?;
+    Ok(())
+}
+
+/// Upstream sa has stray carriage returns *inside* lines (line-ending
+/// conversion damage; trailing CRs are already handled by normalization).
+/// Three cases:
+/// - dic entries `word\r/flags`: the CR is glued to the word — remove it.
+/// - affix rules with a CR glued into a field: remove it.
+/// - affix rules with a bare CR as a whole field (strip/condition): the
+///   original field is unrecoverable and the rule is dead in hunspell too
+///   (no real word matches a CR); every such rule is the sole rule of a
+///   `Y 1` block, so drop the rule together with its header.
+fn patch_sa(text: &mut DictText) -> Result<()> {
+    const REPAIRED_DIC: usize = 109;
+    const REPAIRED_AFF: usize = 6;
+    const DROPPED_RULES: usize = 119;
+
+    let mut repaired_dic = 0usize;
+    let (dic, _) = edit_lines(&text.dic, |line| {
+        line.contains('\r').then(|| {
+            repaired_dic += 1;
+            line.replace('\r', "")
+        })
+    });
+    ensure!(
+        repaired_dic == REPAIRED_DIC,
+        "expected to repair {REPAIRED_DIC} dic entries, repaired {repaired_dic}"
+    );
+    text.dic = dic;
+
+    // Pass 1: classify affix lines and collect the flags of dropped rules.
+    let mut dropped_flags = Vec::new();
+    let mut repaired_aff = 0usize;
+    for line in text.aff.lines() {
+        if !line.contains('\r') {
+            continue;
+        }
+        let fields: Vec<&str> = line.split(' ').collect();
+        if fields.contains(&"\r") {
+            ensure!(
+                fields.len() >= 2 && (fields[0] == "SFX" || fields[0] == "PFX"),
+                "unexpected bare-CR field outside an affix rule: {line:?}"
+            );
+            dropped_flags.push((fields[0].to_owned(), fields[1].to_owned()));
+        } else {
+            repaired_aff += 1;
+        }
+    }
+    ensure!(
+        dropped_flags.len() == DROPPED_RULES,
+        "expected to drop {DROPPED_RULES} dead affix rules, found {}",
+        dropped_flags.len()
+    );
+    ensure!(
+        repaired_aff == REPAIRED_AFF,
+        "expected to repair {REPAIRED_AFF} affix rules, repaired {repaired_aff}"
+    );
+
+    // Pass 2: every dropped rule must be the sole rule of its block; drop the
+    // rule and its `<kw> <flag> Y 1` header, repair the rest.
+    let mut lines = Vec::new();
+    let mut dropped_headers = 0usize;
+    for line in text.aff.lines() {
+        let fields: Vec<&str> = line.split(' ').collect();
+        let block = dropped_flags
+            .iter()
+            .any(|(kw, flag)| fields.len() >= 2 && fields[0] == kw && fields[1] == flag);
+        if block {
+            if fields.contains(&"\r") {
+                continue; // the dead rule
+            }
+            ensure!(
+                fields.len() == 4 && fields[2] == "Y" && fields[3] == "1",
+                "dropped flag has another rule or a non-`Y 1` header: {line:?}"
+            );
+            dropped_headers += 1;
+            continue;
+        }
+        if line.contains('\r') {
+            lines.push(line.replace('\r', ""));
+        } else {
+            lines.push(line.to_owned());
+        }
+    }
+    ensure!(
+        dropped_headers == DROPPED_RULES,
+        "expected to drop {DROPPED_RULES} block headers, dropped {dropped_headers}"
+    );
+    let line_refs: Vec<&str> = lines.iter().map(String::as_str).collect();
+    text.aff = join_lines(&line_refs);
     Ok(())
 }
 

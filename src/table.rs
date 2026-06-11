@@ -320,6 +320,18 @@ pub static SOURCES: &[Source] = &[
     // friulian (-> frozen `fur`):
     // http://digilander.libero.it/paganf/coretors/myspell-fur-12092005.zip
     // returns HTTP 410 Gone (checked 2026-06).
+    // Fork addition (not in upstream wooorm/dictionaries): Ancient Greek,
+    // based on the Perseus Project's Morpheus word list.
+    Source {
+        name: "ancient-greek",
+        page: "https://github.com/mrakia/hunspell-ancient-greek",
+        fetch: Fetch::Archive {
+            url: "https://github.com/mrakia/hunspell-ancient-greek/archive/master.zip",
+            kind: ArchiveKind::Zip,
+        },
+        extra: &[],
+        build: None,
+    },
     // Nothing:
     Source {
         name: "gaelic",
@@ -712,6 +724,18 @@ pub static SOURCES: &[Source] = &[
     // Not updated in 10 years.
     // Go to <https://bitbucket.org/Shaman_Alex/russian-dictionary-hunspell/downloads/>,
     // (or find the link to that on <https://code.google.com/archive/p/hunspell-ru/>).
+    // Fork addition (not in upstream wooorm/dictionaries): Sanskrit, from the
+    // same author's hindi-hunspell collection (also ships Hindi and Marathi).
+    Source {
+        name: "sanskrit",
+        page: "https://github.com/Shreeshrii/hindi-hunspell",
+        fetch: Fetch::Archive {
+            url: "https://github.com/Shreeshrii/hindi-hunspell/archive/master.zip",
+            kind: ArchiveKind::Zip,
+        },
+        extra: &[],
+        build: None,
+    },
     // Nothing.
     Source {
         name: "serbian",
@@ -1929,6 +1953,25 @@ pub static DICTIONARIES: &[Dictionary] = &[
         }),
         spdx: "GPL-3.0",
     },
+    // Fork addition — see the `ancient-greek` source.
+    Dictionary {
+        code: "grc",
+        name: "Ancient Greek",
+        source: "ancient-greek",
+        aff: SourceFile {
+            path: "hunspell-ancient-greek-master/grc_GR.aff",
+            encoding: Enc::Utf8,
+        },
+        dic: SourceFile {
+            path: "hunspell-ancient-greek-master/grc_GR.dic",
+            encoding: Enc::Utf8,
+        },
+        license: Some(SourceFile {
+            path: "hunspell-ancient-greek-master/LICENSE",
+            encoding: Enc::Utf8,
+        }),
+        spdx: "GPL-3.0",
+    },
     Dictionary {
         code: "he",
         name: "Hebrew",
@@ -2439,6 +2482,25 @@ pub static DICTIONARIES: &[Dictionary] = &[
             encoding: Enc::Utf8,
         }),
         spdx: "GPL-3.0",
+    },
+    // Fork addition — see the `sanskrit` source.
+    Dictionary {
+        code: "sa",
+        name: "Sanskrit",
+        source: "sanskrit",
+        aff: SourceFile {
+            path: "hindi-hunspell-master/Sanskrit/sa_IN.aff",
+            encoding: Enc::Utf8,
+        },
+        dic: SourceFile {
+            path: "hindi-hunspell-master/Sanskrit/sa_IN.dic",
+            encoding: Enc::Utf8,
+        },
+        license: Some(SourceFile {
+            path: "hindi-hunspell-master/Sanskrit/COPYING",
+            encoding: Enc::Utf8,
+        }),
+        spdx: "GPL-2.0",
     },
     Dictionary {
         code: "sk",

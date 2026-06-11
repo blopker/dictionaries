@@ -69,6 +69,7 @@ from the patch registry) is always current:
 *   **`la`**: fix two affix rules misspelled `SFK` instead of `SFX`, which also broke the surrounding block's declared rule count
 *   **`mn`**: remove the COMPOUNDRULE block — its `[a0,a1,...]` alternation syntax is not valid hunspell and no parser accepts it
 *   **`ne`**: strip a stray `X` from 171 numeric continuation flags (`17X` → `17`); the X-less flags are the ones actually defined, matching hunspell's lenient numeric parsing; also fix three corrupted entries (a slash inside a word, a stray `I` in a flag list, and two lines merged into one)
+*   **`sa`**: clean up stray carriage returns inside lines: repair dic entries and affix rules where a CR is glued onto a word, and drop single-rule affix blocks whose rule has a bare CR as a whole field (dead rules hunspell could never match)
 *   **`tr`**: renumber affix flag `0` to `9999` — hunspell numeric flags are defined as 1–65000 and flag 0 is rejected by spellbook
 
 <!--patches end-->
@@ -83,7 +84,7 @@ from the patch registry) is always current:
 
 <!--support start-->
 
-In total 92 dictionaries are provided.
+In total 94 dictionaries are provided.
 
 | Code | Language | License | Source |
 | - | - | - | - |
@@ -137,6 +138,7 @@ In total 92 dictionaries are provided.
 | [`ga`](dictionaries/ga) | Irish | [GPL-2.0](dictionaries/ga/license) | [kscanne/gaelspell](https://github.com/kscanne/gaelspell) |
 | [`gd`](dictionaries/gd) | Scottish Gaelic | [GPL-3.0](dictionaries/gd/license) | [kscanne/hunspell-gd](https://github.com/kscanne/hunspell-gd) |
 | [`gl`](dictionaries/gl) | Galician | [GPL-3.0](dictionaries/gl/license) | [meixome/hunspell-gl](https://github.com/meixome/hunspell-gl) |
+| [`grc`](dictionaries/grc) | Ancient Greek | [GPL-3.0](dictionaries/grc/license) | [mrakia/hunspell-ancient-greek](https://github.com/mrakia/hunspell-ancient-greek) |
 | [`he`](dictionaries/he) | Hebrew | [AGPL-3.0](dictionaries/he/license) | [hspell.ivrix.org.il](http://hspell.ivrix.org.il) |
 | [`hr`](dictionaries/hr) | Croatian | [(LGPL-2.1 OR SISSL)](dictionaries/hr/license) | [krunose/hunspell-hr](https://github.com/krunose/hunspell-hr) |
 | [`hu`](dictionaries/hu) | Hungarian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hu/license) | [laszlonemeth/magyarispell](https://github.com/laszlonemeth/magyarispell) |
@@ -167,6 +169,7 @@ In total 92 dictionaries are provided.
 | [`ro`](dictionaries/ro) | Romanian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/ro/license) | [rospell.wordpress.com](https://rospell.wordpress.com) |
 | [`ru`](dictionaries/ru) | Russian | [BSD-3-Clause](dictionaries/ru/license) | [LibreOffice/dictionaries](https://github.com/LibreOffice/dictionaries) |
 | [`rw`](dictionaries/rw) | Kinyarwanda | [GPL-3.0](dictionaries/rw/license) | [kscanne/hunspell-rw](https://github.com/kscanne/hunspell-rw) |
+| [`sa`](dictionaries/sa) | Sanskrit | [GPL-2.0](dictionaries/sa/license) | [Shreeshrii/hindi-hunspell](https://github.com/Shreeshrii/hindi-hunspell) |
 | [`sk`](dictionaries/sk) | Slovak | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/sk/license) | [sk-spell.sk.cx](http://www.sk-spell.sk.cx) |
 | [`sl`](dictionaries/sl) | Slovenian | [(GPL-3.0 OR LGPL-2.1)](dictionaries/sl/license) | [extensions.libreoffice.org](https://extensions.libreoffice.org/extensions/slovenian-dictionary-pack/) |
 | [`sr`](dictionaries/sr) | Serbian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1 OR CC-BY-SA-3.0)](dictionaries/sr/license) | [grakic/hunspell-sr](https://github.com/grakic/hunspell-sr) |
