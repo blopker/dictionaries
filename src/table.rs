@@ -471,6 +471,23 @@ pub static SOURCES: &[Source] = &[
         extra: &[],
         build: None,
     },
+    // Nothing:
+    Source {
+        name: "indonesian",
+        page: "https://github.com/shuLhan/hunspell-id",
+        fetch: Fetch::Files(&[
+            ExtraFile {
+                url: "https://raw.githubusercontent.com/shuLhan/hunspell-id/main/id_ID.aff",
+                dest: "id_ID.aff",
+            },
+            ExtraFile {
+                url: "https://raw.githubusercontent.com/shuLhan/hunspell-id/main/id_ID.dic",
+                dest: "id_ID.dic",
+            },
+        ]),
+        extra: &[],
+        build: None,
+    },
     // Go to <https://github.com/kscanne/gaelspell/releases>, get the latest.
     // Note: hasn’t been a release in 4 years but 5.2 is planned apparently.
     Source {
@@ -2063,6 +2080,21 @@ pub static DICTIONARIES: &[Dictionary] = &[
             encoding: Enc::Utf8,
         }),
         spdx: "Apache-2.0",
+    },
+    Dictionary {
+        code: "id",
+        name: "Indonesian",
+        source: "indonesian",
+        aff: SourceFile {
+            path: "id_ID.aff",
+            encoding: Enc::Utf8,
+        },
+        dic: SourceFile {
+            path: "id_ID.dic",
+            encoding: Enc::Utf8,
+        },
+        license: None,
+        spdx: "GPL-3.0",
     },
     Dictionary {
         code: "is",
