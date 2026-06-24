@@ -84,7 +84,7 @@ from the patch registry) is always current:
 
 <!--support start-->
 
-In total 94 dictionaries are provided.
+In total 95 dictionaries are provided.
 
 | Code | Language | License | Source |
 | - | - | - | - |
@@ -145,6 +145,7 @@ In total 94 dictionaries are provided.
 | [`hy`](dictionaries/hy) | Armenian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hy/license) | (frozen — upstream gone) |
 | [`hyw`](dictionaries/hyw) | Western Armenian | [(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)](dictionaries/hyw/license) | (frozen — upstream gone) |
 | [`ia`](dictionaries/ia) | Interlingua | [GPL-3.0](dictionaries/ia/license) | [addons.thunderbird.net](https://addons.thunderbird.net/en-US/thunderbird/addon/dict-ia/) |
+| [`id`](dictionaries/id) | Indonesian | GPL-3.0 | [shuLhan/hunspell-id](https://github.com/shuLhan/hunspell-id) |
 | [`ie`](dictionaries/ie) | Interlingue | [Apache-2.0](dictionaries/ie/license) | [Carmina16/hunspell-ie](https://github.com/Carmina16/hunspell-ie) |
 | [`is`](dictionaries/is) | Icelandic | [CC-BY-SA-3.0](dictionaries/is/license) | [LibreOffice/dictionaries](https://github.com/LibreOffice/dictionaries) |
 | [`it`](dictionaries/it) | Italian | [GPL-3.0](dictionaries/it/license) | (frozen — upstream gone) |
