@@ -84,7 +84,7 @@ from the patch registry) is always current:
 
 <!--support start-->
 
-In total 94 dictionaries are provided.
+In total 95 dictionaries are provided.
 
 | Code | Language | License | Source |
 | - | - | - | - |
@@ -104,6 +104,7 @@ In total 94 dictionaries are provided.
 | [`en-AU`](dictionaries/en-AU) | English (Australia) | [(MIT AND BSD)](dictionaries/en-AU/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
 | [`en-CA`](dictionaries/en-CA) | English (Canada) | [(MIT AND BSD)](dictionaries/en-CA/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
 | [`en-GB`](dictionaries/en-GB) | English (United Kingdom) | [(MIT AND BSD)](dictionaries/en-GB/license) | [wordlist.aspell.net](http://wordlist.aspell.net/dicts/) |
+| [`en-GB-ize`](dictionaries/en-GB-ize) | English (United Kingdom, Oxford spelling) | [(MIT AND BSD)](dictionaries/en-GB-ize/license) | [wordlist.aspell.net](https://wordlist.aspell.net/dicts/) |
 | [`en-ZA`](dictionaries/en-ZA) | English (South Africa) | [LGPL-2.1](dictionaries/en-ZA/license) | [extensions.openoffice.org](https://extensions.openoffice.org/en/project/english-dictionaries-apache-openoffice) |
 | [`eo`](dictionaries/eo) | Esperanto | [GPL-2.0](dictionaries/eo/license) | [esperantilo.org](http://www.esperantilo.org/index_en.html) |
 | [`es`](dictionaries/es) | Spanish | [(GPL-3.0 OR LGPL-3.0 OR MPL-1.1)](dictionaries/es/license) | [sbosio/rla-es](https://github.com/sbosio/rla-es) |

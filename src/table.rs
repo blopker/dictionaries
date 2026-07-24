@@ -250,6 +250,17 @@ pub static SOURCES: &[Source] = &[
     },
     // Same as `english-gb`
     Source {
+        name: "english-gb-ize",
+        page: "https://wordlist.aspell.net/dicts/",
+        fetch: Fetch::Archive {
+            url: "https://github.com/en-wl/wordlist/releases/download/rel-2026.02.25/hunspell-en_GB-ize-2026.02.25.zip",
+            kind: ArchiveKind::Zip,
+        },
+        extra: &[],
+        build: None,
+    },
+    // Same as `english-gb`
+    Source {
         name: "english-american",
         page: "http://wordlist.aspell.net/dicts/",
         fetch: Fetch::Archive {
@@ -1356,6 +1367,24 @@ pub static DICTIONARIES: &[Dictionary] = &[
         },
         license: Some(SourceFile {
             path: "README_en_GB-ise.txt",
+            encoding: Enc::Utf8,
+        }),
+        spdx: "(MIT AND BSD)",
+    },
+    Dictionary {
+        code: "en-GB-ize",
+        name: "English (United Kingdom, Oxford spelling)",
+        source: "english-gb-ize",
+        aff: SourceFile {
+            path: "en_GB-ize.aff",
+            encoding: Enc::Utf8,
+        },
+        dic: SourceFile {
+            path: "en_GB-ize.dic",
+            encoding: Enc::Utf8,
+        },
+        license: Some(SourceFile {
+            path: "README_en_GB-ize.txt",
             encoding: Enc::Utf8,
         }),
         spdx: "(MIT AND BSD)",
